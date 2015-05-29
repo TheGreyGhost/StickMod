@@ -1,1 +1,11 @@
-item.mbe10_item_simple.name=MBE10 Item Simple
+item.item_long_stick.name=Long Stick
+item.item_extra_long_stick.name=Extra Long Stick
+item.item_fat_stick.name=Fat Stick
+item.item_coal_stick.name=Coal Stick
+item.item_stone_stick.name=Stone Stick
+item.item_gold_stick.name=Gold Stick
+item.item_diamond_stick.name=Diamond Stick
+item.item_emerald_stick.name=Emerald Stick
+item.item_iron_stick.name=Iron Stick
+itemGroup.stickmod_tab=Sticks
+

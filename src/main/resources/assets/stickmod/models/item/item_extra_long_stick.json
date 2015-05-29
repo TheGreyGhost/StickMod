@@ -1,0 +1,23 @@
+{
+    "parent": "builtin/generated",
+    "textures": {
+        "layer0": "stickmod:items/extra_long_stick"
+    },
+    "display": {
+      "thirdperson": {
+        "rotation": [ 0, 90, 317 ],
+        "translation": [ 0.00, 1.00, -6.00 ],
+        "scale": [ 1.60, 1.60, 0.85 ]
+      },
+      "firstperson": {
+        "rotation": [ 0, 229, 41 ],
+        "translation": [ 0.00, 6.25, 2.00 ],
+        "scale": [ 2.60, 2.60, 1.70 ]
+      },
+      "gui": {
+        "rotation": [ 0, 0, 0 ],
+        "translation": [ -0.25, 0.25, 0.00 ],
+        "scale": [ 1.25, 1.25, 1.00 ]
+      }
+    }
+}

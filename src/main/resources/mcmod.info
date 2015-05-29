@@ -1,9 +1,9 @@
 [
 {
   "modid": "stickmod",
-  "name": "Minecraft By Example (mcmod_info)",
-  "description": "Minecraft By Example (mcmod_info)",
-  "version": "1.0_mcmod_info",
+  "name": "Stick Mod",
+  "description": "A mod about sticks",
+  "version": "0.1",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
