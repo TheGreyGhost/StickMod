@@ -1,0 +1,16 @@
+[
+{
+  "modid": "stickmod",
+  "name": "Minecraft By Example (mcmod_info)",
+  "description": "Minecraft By Example (mcmod_info)",
+  "version": "1.0_mcmod_info",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["TGG and others"],
+  "credits": "The Forge, MCP, and FML guys, for making it possible",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

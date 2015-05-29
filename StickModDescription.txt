@@ -1,0 +1,25 @@
+Stick mod description
+* two sticks in a line equals a long stick
+* two long sticks in a line equals an extra long stick
+* two sticks next to each other equals a fat stick
+* a fat stick surrounded by coal equals a coal stick which can be lit and will light up a place when you walk around
+* fat stick surrounded by stone (not cobblestone) = stone stick
+* stone stick surrounded by iron = iron stick
+* iron stick surrounded by gold = gold stick
+* gold stick surrounded by diamond = diamond stick
+* diamond stick surrounded by emerald = emerald stick
+* when you craft the emerald stick it has level 1 at bottom
+* attack with emerald stick to level it up
+* when emerald stick reaches level 10, adds 1 heart to player health
+* level 20 = another heart
+* etc up to level 100 (= total 10 extra hearts)
+* level 110 = when held in inventory, increases attack damage of all weapons
+* level 120 = it increases your speed when you're holding it
+* level 130 = can now spawn dragons from emerald stick
+* level 140 = dragons have more hp, defence, attack, and speed
+* level 150 = cut scene where the emerald stick comes out of your hand, goes into your current dragon, and you only have that dragon left, and when you get it is a baby, and then it is a child, and then it is a teenager so you can get on and glide but not fly, and adult you can get on and fly.
+* all the sticks don't have durability
+* every level all the way up to level 10 it gives you +2 attack damage and from there on +1 attack damage
+
+thread.isCallingFromMinecraftThread()
+Client<-->Server communication using your own custom messages (SimpleNetworkWrapper)
