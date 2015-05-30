@@ -1,6 +1,5 @@
 package stickmod.items;
 
-import com.sun.istack.internal.NotNull;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -22,27 +21,39 @@ public class ItemStick extends ItemSword
   }
 
   public enum StickType {
-    LONG_STICK(ToolMaterial.WOOD),
-    EXTRA_LONG_STICK(ToolMaterial.WOOD),
-    FAT_STICK(ToolMaterial.WOOD),
-    COAL_STICK(ToolMaterial.WOOD),
-    STONE_STICK(ToolMaterial.STONE),
-    IRON_STICK(ToolMaterial.IRON),
-    GOLD_STICK(ToolMaterial.GOLD),
-    DIAMOND_STICK(ToolMaterial.EMERALD),
-    EMERALD_STICK(ToolMaterial.EMERALD);
+    LONG_STICK(ToolMaterial.WOOD, 1.5F),
+    EXTRA_LONG_STICK(ToolMaterial.WOOD, 2.0F),
+    FAT_STICK(ToolMaterial.WOOD, 0.8F),
+    COAL_STICK(ToolMaterial.WOOD, 1.0F),
+    STONE_STICK(ToolMaterial.STONE, 1.0F),
+    IRON_STICK(ToolMaterial.IRON, 1.0F),
+    GOLD_STICK(ToolMaterial.GOLD, 1.0F),
+    DIAMOND_STICK(ToolMaterial.EMERALD, 1.0F),
+    EMERALD_STICK(ToolMaterial.EMERALD, 1.0F);
 
-    StickType(Item.ToolMaterial i_material) {
-      material = i_material;
+    StickType(Item.ToolMaterial i_material, float i_reachDistanceMultiplier) {
+      material = i_material; reachDistanceMultiplier = i_reachDistanceMultiplier;
     }
 
     public Item.ToolMaterial getMaterial() {return material;}
+    public float getReachDistanceMultiplier() {return reachDistanceMultiplier;}
     private Item.ToolMaterial material;
+    private float reachDistanceMultiplier;
   }
 
   static private final String XP_TAG = "XP";
   static private final int DOESNT_HAVE_XP = -1;
   static private final int MAXIMUM_LEVEL = 150;
+
+  // return the distance in blocks that the stick can reach as a weapon
+  public float getReachDistance(ItemStack itemStack, float defaultReach)
+  {
+    if (itemStack == null || !(itemStack.getItem() instanceof ItemStick)) {
+      return defaultReach;
+    }
+    ItemStick itemStick = (ItemStick)(itemStack.getItem());
+    return defaultReach * itemStick.stickType.getReachDistanceMultiplier();
+  }
 
   /**
    * gets the experience level of this itemstack
