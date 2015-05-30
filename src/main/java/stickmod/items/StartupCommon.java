@@ -1,8 +1,10 @@
 package stickmod.items;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -67,6 +69,66 @@ public class StartupCommon
 
   public static void initCommon()
   {
+    GameRegistry.addRecipe(new ItemStack(itemLongStick), new Object[]{
+            ".S.",
+            ".S.",
+            ".S.",
+            'S', Items.stick
+    });
+    GameRegistry.addRecipe(new ItemStack(itemExtraLongStick), new Object[]{
+            ".S.",
+            ".S.",
+            ".S.",
+            'S', itemLongStick
+    });
+    GameRegistry.addRecipe(new ItemStack(itemFatStick), new Object[]{
+            "...",
+            "SSS",
+            "...",
+            'S', Items.stick
+    });
+    GameRegistry.addRecipe(new ItemStack(itemCoalStick), new Object[]{
+            "CCC",
+            "CSC",
+            "CCC",
+            'S', itemFatStick,
+            'C', Items.coal
+    });
+    GameRegistry.addRecipe(new ItemStack(itemStoneStick), new Object[]{
+            "CCC",
+            "CSC",
+            "CCC",
+            'S', itemFatStick,
+            'C', Blocks.stone
+    });
+    GameRegistry.addRecipe(new ItemStack(itemIronStick), new Object[]{
+            "CCC",
+            "CSC",
+            "CCC",
+            'S', itemStoneStick,
+            'C', Items.iron_ingot
+    });
+    GameRegistry.addRecipe(new ItemStack(itemGoldStick), new Object[]{
+            "CCC",
+            "CSC",
+            "CCC",
+            'S', itemIronStick,
+            'C', Items.gold_ingot
+    });
+    GameRegistry.addRecipe(new ItemStack(itemDiamondStick), new Object[]{
+            "CCC",
+            "CSC",
+            "CCC",
+            'S', itemGoldStick,
+            'C', Items.diamond
+    });
+    GameRegistry.addRecipe(new ItemStack(itemEmeraldStick), new Object[]{
+            "CCC",
+            "CSC",
+            "CCC",
+            'S', itemDiamondStick,
+            'C', Items.emerald
+    });
   }
 
   public static void postInitCommon()

@@ -1,13 +1,13 @@
 Stick mod description
-* two sticks in a line equals a long stick
-* two long sticks in a line equals an extra long stick
-* two sticks next to each other equals a fat stick
+# two sticks in a line equals a long stick
+# two long sticks in a line equals an extra long stick
+# two sticks next to each other equals a fat stick
 * a fat stick surrounded by coal equals a coal stick which can be lit and will light up a place when you walk around
-* fat stick surrounded by stone (not cobblestone) = stone stick
-* stone stick surrounded by iron = iron stick
-* iron stick surrounded by gold = gold stick
-* gold stick surrounded by diamond = diamond stick
-* diamond stick surrounded by emerald = emerald stick
+# fat stick surrounded by stone (not cobblestone) = stone stick
+# stone stick surrounded by iron = iron stick
+# iron stick surrounded by gold = gold stick
+# gold stick surrounded by diamond = diamond stick
+# diamond stick surrounded by emerald = emerald stick
 * when you craft the emerald stick it has level 1 at bottom
 * attack with emerald stick to level it up
 * when emerald stick reaches level 10, adds 1 heart to player health
@@ -21,5 +21,8 @@ Stick mod description
 * all the sticks don't have durability
 * every level all the way up to level 10 it gives you +2 attack damage and from there on +1 attack damage
 
-thread.isCallingFromMinecraftThread()
-Client<-->Server communication using your own custom messages (SimpleNetworkWrapper)
+extra notes:
+long & extra long sticks should have longer reach (50% and 100% extra)
+
+add in bosses eg mobzilla
+
