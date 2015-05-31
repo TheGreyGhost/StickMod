@@ -1,0 +1,13 @@
+The classes in this package are used to extend the attack reach of the player depending on which ItemStick
+he or she is holding.
+
+Minecraft sets the reach distance in two locations:
+PlayerControllerMP.getBlockReachDistance()
+and
+C02PacketUseEntity -> NetHandlerPlayServer.processUseEntity()
+
+This is done by replacing Minecraft.playerController (PlayerControllerMP) with a wrapped version:
+getBlockReachDistance() to select an appropriate reach distance, and
+attackEntity() to send a custom attack message to the server, which performs the relevant attack tasks from processUseEntity
+
+The replacement of the vanilla Minecraft.playerController is done during WorldClient load.

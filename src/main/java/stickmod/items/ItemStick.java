@@ -1,10 +1,17 @@
 package stickmod.items;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.List;
 
 /**
  * User: The Grey Ghost
@@ -18,27 +25,29 @@ public class ItemStick extends ItemSword
     super(i_stickType.getMaterial());
     stickType = i_stickType;
     this.setCreativeTab(whichTab);
+    this.setMaxDamage(0);
   }
 
   public enum StickType {
-    LONG_STICK(ToolMaterial.WOOD, 1.5F),
-    EXTRA_LONG_STICK(ToolMaterial.WOOD, 2.0F),
-    FAT_STICK(ToolMaterial.WOOD, 0.8F),
-    COAL_STICK(ToolMaterial.WOOD, 1.0F),
-    STONE_STICK(ToolMaterial.STONE, 1.0F),
-    IRON_STICK(ToolMaterial.IRON, 1.0F),
-    GOLD_STICK(ToolMaterial.GOLD, 1.0F),
-    DIAMOND_STICK(ToolMaterial.EMERALD, 1.0F),
-    EMERALD_STICK(ToolMaterial.EMERALD, 1.0F);
+    LONG_STICK(ToolMaterial.WOOD, 1.0F, false),
+    EXTRA_LONG_STICK(ToolMaterial.WOOD, 2.0F, false),
+    FAT_STICK(ToolMaterial.WOOD, -1.0F, false),
+    COAL_STICK(ToolMaterial.WOOD, 0.0F, false),
+    STONE_STICK(ToolMaterial.STONE, 0.0F, false),
+    IRON_STICK(ToolMaterial.IRON, 0.0F, false),
+    GOLD_STICK(ToolMaterial.GOLD, 0.0F, false),
+    DIAMOND_STICK(ToolMaterial.EMERALD, 0.0F, false),
+    EMERALD_STICK(ToolMaterial.EMERALD, 0.0F, true);
 
-    StickType(Item.ToolMaterial i_material, float i_reachDistanceMultiplier) {
-      material = i_material; reachDistanceMultiplier = i_reachDistanceMultiplier;
+    StickType(Item.ToolMaterial i_material, float i_reachDistanceIncrease, boolean i_hasXP) {
+      material = i_material; reachDistanceIncrease = i_reachDistanceIncrease; hasXP = i_hasXP;
     }
 
     public Item.ToolMaterial getMaterial() {return material;}
-    public float getReachDistanceMultiplier() {return reachDistanceMultiplier;}
+    public float getReachDistanceIncrease() {return reachDistanceIncrease;}
     private Item.ToolMaterial material;
-    private float reachDistanceMultiplier;
+    private float reachDistanceIncrease;
+    private boolean hasXP;
   }
 
   static private final String XP_TAG = "XP";
@@ -52,33 +61,62 @@ public class ItemStick extends ItemSword
       return defaultReach;
     }
     ItemStick itemStick = (ItemStick)(itemStack.getItem());
-    return defaultReach * itemStick.stickType.getReachDistanceMultiplier();
+    return defaultReach + itemStick.stickType.getReachDistanceIncrease();
   }
+
+  @Override
+  public boolean showDurabilityBar(ItemStack stack) {
+    if (stack != null && stack.getItem() instanceof ItemStick) {
+      ItemStick itemStick = (ItemStick)stack.getItem();
+      return itemStick.stickType.hasXP;
+    }
+    return false;
+  }
+
+  @Override
+  public double getDurabilityForDisplay(ItemStack stack)
+  {
+    Pair<Integer, Integer> levelAndXP = getLevelAndRemainderXP(stack);
+    if (levelAndXP.getLeft() == DOESNT_HAVE_XP) return 0;
+    return 1.0 - levelAndXP.getRight() / (double)xpToReachNextLevel(levelAndXP.getLeft());
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced)
+  {
+    Pair<Integer, Integer> levelAndXP = getLevelAndRemainderXP(stack);
+    if (levelAndXP.getLeft() == DOESNT_HAVE_XP) return;
+    tooltip.add("Level " + levelAndXP.getLeft() + ", XP till next:"
+                         + (xpToReachNextLevel(levelAndXP.getLeft()) - levelAndXP.getRight())  );
+  }
+
 
   /**
    * gets the experience level of this itemstack
    * @param itemStack
-   * @return the level, or DOESNT_HAVE_XP for item which has no levels
+   * @return the level (first) and remainder xp (second), or DOESNT_HAVE_XP for item which has no levels
    */
-  public int getLevel(ItemStack itemStack)
+  public Pair<Integer, Integer> getLevelAndRemainderXP(ItemStack itemStack)
   {
     int xpLeft = getXP(itemStack);
-    if (xpLeft == DOESNT_HAVE_XP) return DOESNT_HAVE_XP;
+    if (xpLeft == DOESNT_HAVE_XP) return new ImmutablePair<Integer, Integer>(DOESNT_HAVE_XP, DOESNT_HAVE_XP);
 
     int level = 1;
     do {
-      xpLeft -= xpToReachNextLevel(level);
-      if (xpLeft < 0) break;
+      int xpRequiredForNextLevel = xpToReachNextLevel(level);
+      if (xpLeft < xpRequiredForNextLevel) break;
+      xpLeft -= xpRequiredForNextLevel;
       ++level;
     } while (level < MAXIMUM_LEVEL);
 
-    return level;
+    return new ImmutablePair<Integer, Integer>(level, xpLeft);
   }
 
-  /** the experience points required to raise from this level to the next
+  /** the experience points required to raise from the given level to the next
    *   - same as for player
    * @param level
-   * @return xp required to reach the next level from the start of the current level
+   * @return xp required to reach the next level from the start of the given level
    */
   private int xpToReachNextLevel(int level)
   {
@@ -102,6 +140,8 @@ public class ItemStick extends ItemSword
     if (!(itemStack.getItem() instanceof ItemStick)) {
       return DOESNT_HAVE_XP;
     }
+    ItemStick stick = (ItemStick)itemStack.getItem();
+    if (!stick.stickType.hasXP) return DOESNT_HAVE_XP;
     NBTTagCompound nbtTagCompound = itemStack.getTagCompound();
     if (nbtTagCompound == null) return 0;
     int xp = nbtTagCompound.getInteger(XP_TAG);  // default to 0 if key is wrong type or doesn't exist yet

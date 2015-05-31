@@ -16,6 +16,7 @@ public abstract class CommonProxy {
   {
 	   //read config first
     stickmod.items.StartupCommon.preInitCommon();
+    stickmod.reachextender.StartupCommon.preInitCommon();
   }
 
   /**
@@ -25,6 +26,7 @@ public abstract class CommonProxy {
   public void init()
   {
     stickmod.items.StartupCommon.initCommon();
+    stickmod.reachextender.StartupCommon.initCommon();
   }
 
   /**
@@ -33,6 +35,7 @@ public abstract class CommonProxy {
   public void postInit()
   {
     stickmod.items.StartupCommon.postInitCommon();
+    stickmod.reachextender.StartupCommon.postInitCommon();
   }
 
   // helper to determine whether the given player is in creative mode

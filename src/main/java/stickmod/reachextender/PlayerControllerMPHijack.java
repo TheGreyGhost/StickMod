@@ -14,6 +14,7 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import stickmod.items.ItemStick;
+import stickmod.usefultools.UsefulFunctions;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -23,13 +24,22 @@ import java.lang.reflect.Method;
  */
 @SideOnly(Side.CLIENT)
 public class PlayerControllerMPHijack extends PlayerControllerMP {
-  private static final Method keybindArrayField = ReflectionHelper
-          .findMethod(PlayerControllerMP.class, PlayerControllerMPHijack.class, "keybindArray", "field_74516_a");
+  private static Method syncCurrentPlayItemMethod;
 
-  public static PlayerControllerMPHijack createFromVanilla(PlayerControllerMP playerControllerMP, NetHandlerPlayClient netHandlerPlayClient)
+  public static PlayerControllerMPHijack createFromVanilla(PlayerControllerMP playerControllerMP)
   {
+    NetHandlerPlayClient netHandlerPlayClient = ReflectionHelper.getPrivateValue
+            (PlayerControllerMP.class, playerControllerMP, "netClientHandler", "field_78774_b");
+
     PlayerControllerMPHijack retObj = new PlayerControllerMPHijack(Minecraft.getMinecraft(), netHandlerPlayClient);
-    retObj.setGameType(playerControllerMP.getCurrentGameType());
+
+    WorldSettings.GameType gameType = ReflectionHelper.getPrivateValue(PlayerControllerMP.class, playerControllerMP,
+                                                                       "currentGameType", "field_78779_k");
+
+    ReflectionHelper.setPrivateValue(PlayerControllerMP.class, retObj, gameType, "currentGameType", "field_78779_k");
+    syncCurrentPlayItemMethod = UsefulFunctions.findMethod(PlayerControllerMP.class,
+                                                           new String [] {"syncCurrentPlayItem", "func_78750_j"},
+                                                           new Class [] {});
     return retObj;
   }
 
@@ -52,17 +62,21 @@ public class PlayerControllerMPHijack extends PlayerControllerMP {
     }
   }
 
+  // copied from base class
   @Override
   public void attackEntity(EntityPlayer playerIn, Entity targetEntity)
   {
-    this.syncCurrentPlayItem();
-    this.netClientHandler.addToSendQueue(new C02PacketUseEntity(targetEntity, C02PacketUseEntity.Action.ATTACK));
-
-    if (this.currentGameType != WorldSettings.GameType.SPECTATOR)
+    try {
+      syncCurrentPlayItemMethod.invoke(this);
+    } catch (Exception e) {
+      throw new RuntimeException("Could not invoke syncCurrentPlayItem()", e);
+    }
+//    this.syncCurrentPlayItem();
+    AttackMessageToServer attackMessageToServer = new AttackMessageToServer(targetEntity);
+    StartupCommon.simpleNetworkWrapper.sendToServer(attackMessageToServer);
+    if (getCurrentGameType() != WorldSettings.GameType.SPECTATOR)
     {
       playerIn.attackTargetEntityWithCurrentItem(targetEntity);
     }
   }
-
-
 }

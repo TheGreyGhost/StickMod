@@ -5,6 +5,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -129,6 +130,8 @@ public class StartupCommon
             'S', itemDiamondStick,
             'C', Items.emerald
     });
+
+    MinecraftForge.EVENT_BUS.register(new SlayEntityHandler());
   }
 
   public static void postInitCommon()

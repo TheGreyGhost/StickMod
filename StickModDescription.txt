@@ -22,7 +22,9 @@ Stick mod description
 * every level all the way up to level 10 it gives you +2 attack damage and from there on +1 attack damage
 
 extra notes:
-long & extra long sticks should have longer reach (50% and 100% extra)
+#long & extra long sticks should have longer reach (+1 and +2 extra)
+#fat stick has shorter reach (-1)
+
 
 add in bosses eg mobzilla
 

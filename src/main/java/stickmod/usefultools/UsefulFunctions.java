@@ -1,5 +1,8 @@
 package stickmod.usefultools;
 
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import java.lang.reflect.Method;
+
 /**
  * User: The Grey Ghost
  * Date: 12/01/2015
@@ -28,6 +31,25 @@ public class UsefulFunctions
     if (x >= x2) return y2;
     double xFraction = (x - x1) / (x2 - x1);
     return y1 + xFraction * (y2 - y1);
+  }
+
+  public static Method findMethod(Class clazz, String[] methodNames, Class<?>... methodTypes)
+  {
+    Exception failed = null;
+    for (String methodName : methodNames)
+    {
+      try
+      {
+        Method m = clazz.getDeclaredMethod(methodName, methodTypes);
+        m.setAccessible(true);
+        return m;
+      }
+      catch (Exception e)
+      {
+        failed = e;
+      }
+    }
+    throw new ReflectionHelper.UnableToFindMethodException(methodNames, failed);
   }
 
 }
