@@ -21,6 +21,7 @@ public class ClientOnlyProxy extends CommonProxy
     super.preInit();
     stickmod.items.StartupClientOnly.preInitClientOnly();
     stickmod.reachextender.StartupClientOnly.preInitClientOnly();
+    stickmod.coalsticklight.StartupClientOnly.preInitClientOnly();
   }
 
   /**
@@ -32,6 +33,7 @@ public class ClientOnlyProxy extends CommonProxy
     super.init();
     stickmod.items.StartupClientOnly.initClientOnly();
     stickmod.reachextender.StartupClientOnly.initClientOnly();
+    stickmod.coalsticklight.StartupClientOnly.initClientOnly();
   }
 
   /**
@@ -42,6 +44,7 @@ public class ClientOnlyProxy extends CommonProxy
     super.postInit();
     stickmod.items.StartupClientOnly.postInitClientOnly();
     stickmod.reachextender.StartupClientOnly.postInitClientOnly();
+    stickmod.coalsticklight.StartupClientOnly.postInitClientOnly();
   }
 
   @Override

@@ -1,0 +1,6 @@
+Uses DynamicLights by atomicstryker
+
+During IDE, set the variable in the VM options
+-Dfml.coreMods.load=atomicstryker.dynamiclights.common.DLFMLCorePlugin
+
+Otherwise, just include the jar with the mod build.
