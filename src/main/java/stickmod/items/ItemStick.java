@@ -10,6 +10,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.lwjgl.util.Color;
 
 import java.util.List;
 
@@ -178,6 +179,17 @@ public class ItemStick extends ItemSword
     int xp = getXP(itemStack);
     if (xp == DOESNT_HAVE_XP) return;
     setXP(itemStack, xp + xpToAdd);
+  }
+
+  @Override
+  public int getColorFromItemStack(ItemStack stack, int renderPass)
+  {
+    switch (renderPass) {
+      case 0: return java.awt.Color.WHITE.getRGB();
+      case 1: return 0;
+      case 2: return java.awt.Color.GREEN.getRGB();
+      default:return java.awt.Color.RED.getRGB();
+    }
   }
 
   private StickType stickType;

@@ -18,6 +18,7 @@ public abstract class CommonProxy {
     stickmod.items.StartupCommon.preInitCommon();
     stickmod.reachextender.StartupCommon.preInitCommon();
     stickmod.coalsticklight.StartupCommon.preInitCommon();
+    stickmod.levelnumbering.StartupCommon.preInitCommon();
   }
 
   /**
@@ -29,6 +30,7 @@ public abstract class CommonProxy {
     stickmod.items.StartupCommon.initCommon();
     stickmod.reachextender.StartupCommon.initCommon();
     stickmod.coalsticklight.StartupCommon.initCommon();
+    stickmod.levelnumbering.StartupCommon.initCommon();
   }
 
   /**
@@ -39,6 +41,7 @@ public abstract class CommonProxy {
     stickmod.items.StartupCommon.postInitCommon();
     stickmod.reachextender.StartupCommon.postInitCommon();
     stickmod.coalsticklight.StartupCommon.postInitCommon();
+    stickmod.levelnumbering.StartupCommon.postInitCommon();
   }
 
   // helper to determine whether the given player is in creative mode
