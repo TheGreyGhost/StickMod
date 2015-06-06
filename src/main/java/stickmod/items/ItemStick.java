@@ -52,7 +52,7 @@ public class ItemStick extends ItemSword
   }
 
   static private final String XP_TAG = "XP";
-  static private final int DOESNT_HAVE_XP = -1;
+  static public final int DOESNT_HAVE_XP = -1;
   static private final int MAXIMUM_LEVEL = 150;
 
   // return the distance in blocks that the stick can reach as a weapon
@@ -67,10 +67,10 @@ public class ItemStick extends ItemSword
 
   @Override
   public boolean showDurabilityBar(ItemStack stack) {
-    if (stack != null && stack.getItem() instanceof ItemStick) {
-      ItemStick itemStick = (ItemStick)stack.getItem();
-      return itemStick.stickType.hasXP;
-    }
+//    if (stack != null && stack.getItem() instanceof ItemStick) {
+//      ItemStick itemStick = (ItemStick)stack.getItem();
+//      return itemStick.stickType.hasXP;
+//    }
     return false;
   }
 
@@ -119,7 +119,7 @@ public class ItemStick extends ItemSword
    * @param level
    * @return xp required to reach the next level from the start of the given level
    */
-  private int xpToReachNextLevel(int level)
+  public int xpToReachNextLevel(int level)
   {
     if (level >= 30) {
       return 112 + (level - 30) * 9;
