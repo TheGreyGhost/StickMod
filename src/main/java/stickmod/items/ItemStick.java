@@ -120,6 +120,12 @@ public class ItemStick extends ItemSword
       String damageKeyName = SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName();
       multimap.remove(damageKeyName, newDamage);
       multimap.put(damageKeyName, newDamage);
+
+      AttributeModifier newMaxHealth = new AttributeModifier(itemModifierUUID,
+                                                          "Weapon modifier", getCurrentHealthBoost(stack), 0);
+      String maxHealthKeyName = SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName();
+      multimap.remove(maxHealthKeyName, newMaxHealth);
+      multimap.put(maxHealthKeyName, newMaxHealth);
     }
     return multimap;
   }
@@ -133,6 +139,20 @@ public class ItemStick extends ItemSword
     }
     return 4.0F + levelAndXP.getLeft() / 5.0F;
   }
+
+  // if this is a levelable item, one extra heart per 10 levels up to level 100
+  private int getCurrentHealthBoost(ItemStack stack) {
+    ItemStick itemStick = (ItemStick) stack.getItem();
+    Pair<Integer, Integer> levelAndXP = itemStick.getLevelAndRemainderXP(stack);
+    if (levelAndXP.getLeft() == DOESNT_HAVE_XP) {
+      return 0;
+    }
+    int healthBoost = levelAndXP.getLeft() / 10;
+    if (healthBoost < 0) healthBoost = 0;
+    if (healthBoost > 10) healthBoost = 10;
+    return 2 * healthBoost;  // half hearts
+  }
+
 
   /**
    * gets the experience level of this itemstack
