@@ -23,7 +23,7 @@ import stickmod.reachextender.AttackMessageToServer;
 public class StartupCommon {
   public static void preInitCommon()
   {
-    MinecraftForge.EVENT_BUS.register(new LivingAttackEventDebugger());
+//    MinecraftForge.EVENT_BUS.register(new LivingAttackEventDebugger());
   }
 
   public static void initCommon()

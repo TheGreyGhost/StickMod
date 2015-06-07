@@ -9,11 +9,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.util.Color;
+import stickmod.StickMod;
 
 import java.util.List;
 
@@ -66,6 +68,18 @@ public class ItemStick extends ItemSword
     }
     ItemStick itemStick = (ItemStick)(itemStack.getItem());
     return defaultReach + itemStick.stickType.getReachDistanceIncrease();
+  }
+
+  // for debugging only - add one level every left click
+  @Override
+  public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)
+  {
+    if (!StickMod.DEBUG) return itemStackIn;
+    Pair<Integer, Integer> levelAndXP = getLevelAndRemainderXP(itemStackIn);
+    if (levelAndXP.getLeft() == DOESNT_HAVE_XP) return itemStackIn;
+
+    addXP(itemStackIn, xpToReachNextLevel(levelAndXP.getLeft()));
+    return itemStackIn;
   }
 
   @Override

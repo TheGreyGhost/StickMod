@@ -99,9 +99,9 @@ public class ModelWithLevel implements ISmartItemModel, IPerspectiveAwareModel {
     final float DISTANCE_BEHIND_SOUTH_FACE = SOUTH_FACE_POSITION - BUILTIN_GEN_ITEM_Z_MAX;
     final float DISTANCE_BEHIND_NORTH_FACE = BUILTIN_GEN_ITEM_Z_MIN - NORTH_FACE_POSITION;
 
-    final float digitCentrePositionY = 1.0F/16.0F;
-    final float DIGIT_WIDTH_X = 6.0F / 16.0F;
-    final float DIGIT_HEIGHT_Y = 6.0F / 16.0F;
+    final float digitCentrePositionY = 4.0F/16.0F;
+    final float DIGIT_WIDTH_X = 8.0F / 16.0F;
+    final float DIGIT_HEIGHT_Y = 8.0F / 16.0F;
     final float DIGIT_WIDTH_U = 8.0F / 32.0F;
     final float DIGIT_HEIGHT_V = 8.0F / 32.0F;
 
@@ -114,6 +114,7 @@ public class ModelWithLevel implements ISmartItemModel, IPerspectiveAwareModel {
     //   existing face, which leads to "z-fighting" where the two quads
     //   fight each other to be on top.  looks awful.
 
+    final int LEVEL_COLOUR = Color.BLUE.getRGB();   // DOESN'T WORK!
     final float [] digitUmin = {0.00F, 0.25F, 0.50F, 0.75F, 0.00F, 0.25F, 0.50F, 0.75F, 0.00F, 0.25F};
     final float [] digitVmin = {0.00F, 0.00F, 0.00F, 0.00F, 0.25F, 0.25F, 0.25F, 0.25F, 0.50F, 0.50F};
 
@@ -126,8 +127,8 @@ public class ModelWithLevel implements ISmartItemModel, IPerspectiveAwareModel {
                                                         -DISTANCE_BEHIND_SOUTH_FACE + DELTA_FOR_OVERLAP * 3,
                                                         digitsTexture,
                                                         digitUmin[digit], DIGIT_WIDTH_U, digitVmin[digit], DIGIT_HEIGHT_V,
-                                                        ITEM_RENDER_LAYER0, EnumFacing.SOUTH
-                                                       );
+                                                        ITEM_RENDER_LAYER0, EnumFacing.SOUTH,
+                                                        LEVEL_COLOUR);
       bakedQuadList.add(hundredsDigit);
     }
     if (level >= 10) {
@@ -138,8 +139,8 @@ public class ModelWithLevel implements ISmartItemModel, IPerspectiveAwareModel {
                                                        -DISTANCE_BEHIND_SOUTH_FACE + DELTA_FOR_OVERLAP * 3,
                                                        digitsTexture,
                                                        digitUmin[digit], DIGIT_WIDTH_U, digitVmin[digit], DIGIT_HEIGHT_V,
-                                                       ITEM_RENDER_LAYER0, EnumFacing.SOUTH
-                                                      );
+                                                       ITEM_RENDER_LAYER0, EnumFacing.SOUTH,
+                                                       LEVEL_COLOUR);
       bakedQuadList.add(tensDigit);
     }
 
@@ -150,8 +151,8 @@ public class ModelWithLevel implements ISmartItemModel, IPerspectiveAwareModel {
                                                      -DISTANCE_BEHIND_SOUTH_FACE + DELTA_FOR_OVERLAP * 3,
                                                      digitsTexture,
                                                      digitUmin[digit], DIGIT_WIDTH_U, digitVmin[digit], DIGIT_HEIGHT_V,
-                                                     ITEM_RENDER_LAYER0, EnumFacing.SOUTH
-                                                    );
+                                                     ITEM_RENDER_LAYER0, EnumFacing.SOUTH,
+                                                     LEVEL_COLOUR);
     bakedQuadList.add(onesDigit);
 
     float XP_BAR_XMIN = 0.0F;
@@ -167,8 +168,8 @@ public class ModelWithLevel implements ISmartItemModel, IPerspectiveAwareModel {
                                                  -DISTANCE_BEHIND_SOUTH_FACE + DELTA_FOR_OVERLAP,
                                                  digitsTexture,
                                                  XP_BAR_GREY_UMIN, DIGIT_WIDTH_U, XP_BAR_VMIN, DIGIT_HEIGHT_V,
-                                                 ITEM_RENDER_LAYER0, EnumFacing.SOUTH
-                                                );
+                                                 ITEM_RENDER_LAYER0, EnumFacing.SOUTH,
+                                                 Color.WHITE.getRGB());
     bakedQuadList.add(experienceBarShadow);
 
     float xBarWidth = XP_BAR_XWIDTH * levelFraction;
@@ -178,8 +179,8 @@ public class ModelWithLevel implements ISmartItemModel, IPerspectiveAwareModel {
                                                            -DISTANCE_BEHIND_SOUTH_FACE + DELTA_FOR_OVERLAP * 2,
                                                            digitsTexture,
                                                            XP_BAR_YELLOW_UMIN, DIGIT_WIDTH_U, XP_BAR_VMIN, DIGIT_HEIGHT_V,
-                                                           ITEM_RENDER_LAYER0, EnumFacing.SOUTH
-                                                          );
+                                                           ITEM_RENDER_LAYER0, EnumFacing.SOUTH,
+                                                           Color.WHITE.getRGB());
     bakedQuadList.add(experienceBar);
 
     return bakedQuadList;
@@ -235,11 +236,14 @@ public class ModelWithLevel implements ISmartItemModel, IPerspectiveAwareModel {
    * @param vheight the v coordinate height within the texture [0 - 1]
    * @param itemRenderLayer which item layer the quad is on
    * @param face the face to draw this quad on
+   * @param colourRGB
    * @return
    */
-  private BakedQuad createBakedQuadForFace(float centreLR, float width, float centreUD, float height, float forwardDisplacement,
-                                           TextureAtlasSprite texture, float umin, float uwidth, float vmin, float vheight,
-                                           int itemRenderLayer, EnumFacing face)
+  private BakedQuad createBakedQuadForFace(float centreLR, float width, float centreUD, float height,
+                                           float forwardDisplacement,
+                                           TextureAtlasSprite texture, float umin, float uwidth, float vmin,
+                                           float vheight,
+                                           int itemRenderLayer, EnumFacing face, int colourRGB)
   {
     float x1, x2, x3, x4;
     float y1, y2, y3, y4;
@@ -302,10 +306,10 @@ public class ModelWithLevel implements ISmartItemModel, IPerspectiveAwareModel {
       }
     }
 
-    return new BakedQuad(Ints.concat(vertexToInts(x1, y1, z1, Color.WHITE.getRGB(), texture, umin+uwidth, vmin+vheight),
-                                     vertexToInts(x2, y2, z2, Color.WHITE.getRGB(), texture, umin+uwidth, vmin),
-                                     vertexToInts(x3, y3, z3, Color.WHITE.getRGB(), texture, umin, vmin),
-                                     vertexToInts(x4, y4, z4, Color.WHITE.getRGB(), texture, umin, vmin+vheight)),
+    return new BakedQuad(Ints.concat(vertexToInts(x1, y1, z1, colourRGB, texture, umin+uwidth, vmin+vheight),
+                                     vertexToInts(x2, y2, z2, colourRGB, texture, umin+uwidth, vmin),
+                                     vertexToInts(x3, y3, z3, colourRGB, texture, umin, vmin),
+                                     vertexToInts(x4, y4, z4, colourRGB, texture, umin, vmin+vheight)),
                          itemRenderLayer, face);
   }
 
