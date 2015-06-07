@@ -1,6 +1,9 @@
 package stickmod.items;
 
+import com.google.common.collect.Multimap;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -92,15 +95,39 @@ public class ItemStick extends ItemSword
                          + (xpToReachNextLevel(levelAndXP.getLeft()) - levelAndXP.getRight())  );
   }
 
+  // if item is level-able, add damage modified
+  @Override
+  public Multimap getAttributeModifiers(ItemStack stack)
+  {
+    Multimap multimap = super.getItemAttributeModifiers();
+    if (stack != null && stack.getItem() instanceof ItemStick) {
+      AttributeModifier newDamage = new AttributeModifier(itemModifierUUID,
+                                                           "Weapon modifier", getCurrentAttackDamage(stack), 0);
+      String damageKeyName = SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName();
+      multimap.remove(damageKeyName, newDamage);
+      multimap.put(damageKeyName, newDamage);
+    }
+    return multimap;
+  }
+
+  // if this is a levelable item, damage is 4 + level / 5.0F
+  private double getCurrentAttackDamage(ItemStack stack) {
+    ItemStick itemStick = (ItemStick) stack.getItem();
+    Pair<Integer, Integer> levelAndXP = itemStick.getLevelAndRemainderXP(stack);
+    if (levelAndXP.getLeft() == DOESNT_HAVE_XP) {
+      return getDamageVsEntity();
+    }
+    return 4.0F + levelAndXP.getLeft() / 5.0F;
+  }
 
   /**
    * gets the experience level of this itemstack
-   * @param itemStack
+   * @param stack
    * @return the level (first) and remainder xp (second), or DOESNT_HAVE_XP for item which has no levels
    */
-  public Pair<Integer, Integer> getLevelAndRemainderXP(ItemStack itemStack)
+  public Pair<Integer, Integer> getLevelAndRemainderXP(ItemStack stack)
   {
-    int xpLeft = getXP(itemStack);
+    int xpLeft = getXP(stack);
     if (xpLeft == DOESNT_HAVE_XP) return new ImmutablePair<Integer, Integer>(DOESNT_HAVE_XP, DOESNT_HAVE_XP);
 
     int level = 1;

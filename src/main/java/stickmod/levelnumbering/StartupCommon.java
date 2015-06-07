@@ -1,5 +1,6 @@
 package stickmod.levelnumbering;
 
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -22,6 +23,7 @@ import stickmod.reachextender.AttackMessageToServer;
 public class StartupCommon {
   public static void preInitCommon()
   {
+    MinecraftForge.EVENT_BUS.register(new LivingAttackEventDebugger());
   }
 
   public static void initCommon()

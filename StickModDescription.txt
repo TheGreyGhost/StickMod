@@ -8,8 +8,8 @@ Stick mod description
 # iron stick surrounded by gold = gold stick
 # gold stick surrounded by diamond = diamond stick
 # diamond stick surrounded by emerald = emerald stick
-* when you craft the emerald stick it has level 1 at bottom
-* attack with emerald stick to level it up
+# when you craft the emerald stick it has level 1 at bottom
+# attack with emerald stick to level it up
 * when emerald stick reaches level 10, adds 1 heart to player health
 * level 20 = another heart
 * etc up to level 100 (= total 10 extra hearts)
