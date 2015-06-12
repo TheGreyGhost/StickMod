@@ -91,13 +91,13 @@ public class ItemStick extends ItemSword
     return false;
   }
 
-  @Override
-  public double getDurabilityForDisplay(ItemStack stack)
-  {
-    Pair<Integer, Integer> levelAndXP = getLevelAndRemainderXP(stack);
-    if (levelAndXP.getLeft() == DOESNT_HAVE_XP) return 0;
-    return 1.0 - levelAndXP.getRight() / (double)xpToReachNextLevel(levelAndXP.getLeft());
-  }
+//  @Override
+//  public double getDurabilityForDisplay(ItemStack stack)
+//  {
+//    Pair<Integer, Integer> levelAndXP = getLevelAndRemainderXP(stack);
+//    if (levelAndXP.getLeft() == DOESNT_HAVE_XP) return 0;
+//    return 1.0 - levelAndXP.getRight() / (double)xpToReachNextLevel(levelAndXP.getLeft());
+//  }
 
   @Override
   @SideOnly(Side.CLIENT)
@@ -105,8 +105,9 @@ public class ItemStick extends ItemSword
   {
     Pair<Integer, Integer> levelAndXP = getLevelAndRemainderXP(stack);
     if (levelAndXP.getLeft() == DOESNT_HAVE_XP) return;
+    int xpToNextLevel = xpToReachNextLevel(levelAndXP.getLeft()) - levelAndXP.getRight();
     tooltip.add("Level " + levelAndXP.getLeft() + ", XP till next:"
-                         + (xpToReachNextLevel(levelAndXP.getLeft()) - levelAndXP.getRight())  );
+                         + (xpToNextLevel != 0 ? xpToNextLevel : "MAX"));
   }
 
   // if item is level-able, add damage modified
@@ -126,6 +127,12 @@ public class ItemStick extends ItemSword
       String maxHealthKeyName = SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName();
       multimap.remove(maxHealthKeyName, newMaxHealth);
       multimap.put(maxHealthKeyName, newMaxHealth);
+
+      AttributeModifier newSpeedBoost = new AttributeModifier(itemModifierUUID,
+                                                             "Weapon modifier", getCurrentSpeedMultiplier(stack), 1);
+      String speedKeyName = SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName();
+      multimap.put(speedKeyName, newSpeedBoost);
+
     }
     return multimap;
   }
@@ -153,6 +160,17 @@ public class ItemStick extends ItemSword
     return 2 * healthBoost;  // half hearts
   }
 
+  private float getCurrentSpeedMultiplier(ItemStack stack)
+  {
+    ItemStick itemStick = (ItemStick) stack.getItem();
+    Pair<Integer, Integer> levelAndXP = itemStick.getLevelAndRemainderXP(stack);
+    if (levelAndXP.getLeft() == DOESNT_HAVE_XP) {
+      return 0;
+    }
+    final int LEVEL_FOR_SPEED_BOOST = 120;
+    final float SPEED_BOOST_FRACTION = 0.5F;
+    return levelAndXP.getLeft() >= LEVEL_FOR_SPEED_BOOST ? SPEED_BOOST_FRACTION : 0.0F;
+  }
 
   /**
    * gets the experience level of this itemstack
@@ -171,19 +189,24 @@ public class ItemStick extends ItemSword
       xpLeft -= xpRequiredForNextLevel;
       ++level;
     } while (level < MAXIMUM_LEVEL);
-
+    if (level == MAXIMUM_LEVEL) {
+      xpLeft = 0;
+    }
     return new ImmutablePair<Integer, Integer>(level, xpLeft);
   }
 
   /** the experience points required to raise from the given level to the next
-   *   - same as for player
+   *   - same as for player, but levels off at 200 per level
    * @param level
-   * @return xp required to reach the next level from the start of the given level
+   * @return xp required to reach the next level from the start of the given level; 0 if max level.
    */
   public int xpToReachNextLevel(int level)
   {
+    if (level < 1 || level >= MAXIMUM_LEVEL) return 0;
     if (level >= 30) {
-      return 112 + (level - 30) * 9;
+      int xpRequired = 112 + (level - 30) * 9;
+      if (xpRequired > 200) xpRequired = 200;
+      return xpRequired;
     } else if (level >= 15) {
         return 37 + (level - 15) * 5;
     } else {

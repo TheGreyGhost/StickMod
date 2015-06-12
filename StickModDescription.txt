@@ -10,16 +10,15 @@ Stick mod description
 # diamond stick surrounded by emerald = emerald stick
 # when you craft the emerald stick it has level 1 at bottom
 # attack with emerald stick to level it up
-* when emerald stick reaches level 10, adds 1 heart to player health
-* level 20 = another heart
-* etc up to level 100 (= total 10 extra hearts)
-* level 110 = when held in inventory, increases attack damage of all weapons
-* level 120 = it increases your speed when you're holding it
+# when emerald stick reaches level 10, adds 1 heart to player health
+# level 20 = another heart
+# etc up to level 100 (= total 10 extra hearts)
+# level 120 = it increases your speed when you're holding it
 * level 130 = can now spawn dragons from emerald stick
 * level 140 = dragons have more hp, defence, attack, and speed
 * level 150 = cut scene where the emerald stick comes out of your hand, goes into your current dragon, and you only have that dragon left, and when you get it is a baby, and then it is a child, and then it is a teenager so you can get on and glide but not fly, and adult you can get on and fly.
-* all the sticks don't have durability
-* every level all the way up to level 10 it gives you +2 attack damage and from there on +1 attack damage
+# all the sticks don't have durability
+# every level all the way up to level 10 it gives you +2 attack damage and from there on +1 attack damage
 
 extra notes:
 #long & extra long sticks should have longer reach (+1 and +2 extra)

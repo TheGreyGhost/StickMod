@@ -40,7 +40,8 @@ public class ModelWithLevel implements ISmartItemModel, IPerspectiveAwareModel {
       Pair<Integer,Integer> levelAndRemainderXP = itemStick.getLevelAndRemainderXP(stack);
       if (levelAndRemainderXP.getLeft() != ItemStick.DOESNT_HAVE_XP) {
         level = levelAndRemainderXP.getLeft();
-        levelFraction = (levelAndRemainderXP.getRight() + 1 ) / (float)itemStick.xpToReachNextLevel(level);
+        int xpToNextLevel = itemStick.xpToReachNextLevel(level);
+        levelFraction = (xpToNextLevel == 0) ? 1.0F : (levelAndRemainderXP.getRight() + 1 ) / (float)xpToNextLevel;
         if (levelFraction > 1.0F) levelFraction = 1.0F;
       }
     }
