@@ -131,6 +131,8 @@ public class StartupCommon
             'C', Items.emerald
     });
 
+    GameRegistry.addRecipe(new ItemLevelUpRecipe());
+
     MinecraftForge.EVENT_BUS.register(new SlayEntityHandler());
   }
 

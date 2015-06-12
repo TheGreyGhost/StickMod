@@ -46,8 +46,8 @@ public class ClientOnlyProxy extends CommonProxy
     super.postInit();
     stickmod.items.StartupClientOnly.postInitClientOnly();
     stickmod.reachextender.StartupClientOnly.postInitClientOnly();
-    stickmod.coalsticklight.StartupClientOnly.initClientOnly();
-    stickmod.levelnumbering.StartupClientOnly.initClientOnly();
+    stickmod.coalsticklight.StartupClientOnly.postInitClientOnly();
+    stickmod.levelnumbering.StartupClientOnly.postInitClientOnly();
   }
 
   @Override

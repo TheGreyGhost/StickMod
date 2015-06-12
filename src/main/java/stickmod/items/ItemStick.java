@@ -74,7 +74,7 @@ public class ItemStick extends ItemSword
   @Override
   public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)
   {
-    if (!StickMod.DEBUG) return itemStackIn;
+    if (!StickMod.DEBUG) return super.onItemRightClick(itemStackIn, worldIn, playerIn);
     Pair<Integer, Integer> levelAndXP = getLevelAndRemainderXP(itemStackIn);
     if (levelAndXP.getLeft() == DOESNT_HAVE_XP) return itemStackIn;
 
